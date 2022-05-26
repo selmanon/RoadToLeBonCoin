@@ -35,4 +35,8 @@ class AlbumsLocalDataSource internal constructor(private val albumsDao: AlbumsDa
         albumsDao.deleteAlbums()
     }
 
+    override suspend fun saveAllAlbums(albums : List<Album>) {
+        albumsDao.insertAllAlbums(albums)
+    }
+
 }

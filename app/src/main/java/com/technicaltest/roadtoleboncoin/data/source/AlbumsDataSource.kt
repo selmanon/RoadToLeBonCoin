@@ -15,4 +15,6 @@ interface AlbumsDataSource {
 
     suspend fun deleteAllAlbums()
 
+    suspend fun saveAllAlbums(albums : List<Album>)
+
 }

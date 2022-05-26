@@ -20,7 +20,7 @@ class AlbumsRemoteDataSource internal constructor(private val retrofit: Retrofit
     }
 
     override suspend fun getAllAlbums(): Result<List<Album>> {
-        val albumsService = retrofit.create(AlbumsService::class.java);
+        val albumsService = retrofit.create(AlbumsService::class.java)
 
         val albums = withContext(IO) {
             albumsService.fetchAlbums()
@@ -34,6 +34,10 @@ class AlbumsRemoteDataSource internal constructor(private val retrofit: Retrofit
     }
 
     override suspend fun deleteAllAlbums() {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun saveAllAlbums(albums: List<Album>) {
         TODO("Not yet implemented")
     }
 }

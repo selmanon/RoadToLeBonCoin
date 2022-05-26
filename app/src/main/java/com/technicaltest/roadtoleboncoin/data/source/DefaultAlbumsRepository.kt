@@ -1,6 +1,8 @@
 package com.technicaltest.roadtoleboncoin.data.source
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.technicaltest.roadtoleboncoin.data.Album
 import com.technicaltest.roadtoleboncoin.data.local.AlbumsLocalDataSource
 import com.technicaltest.roadtoleboncoin.data.remote.AlbumsRemoteDataSource
@@ -28,10 +30,7 @@ class DefaultAlbumsRepository(
     }
 
 
-    override fun observeAlbums(): LiveData<Result<List<Album>>> {
-        TODO("Not yet implemented")
-    }
-
+    override fun observeAlbums(): LiveData<Result<List<Album>>> = albumsLocalDataSource.observeAlbums()
 
 
     override suspend fun saveAlbum(alum: Album) {
@@ -45,9 +44,7 @@ class DefaultAlbumsRepository(
         if (remoteAlbums is Result.Success) {
             // Real apps might want to do a proper sync, deleting, modifying or adding each album.
             albumsLocalDataSource.deleteAllAlbums()
-            remoteAlbums.data.forEach { album ->
-                albumsLocalDataSource.saveAlbum(album)
-            }
+            albumsLocalDataSource.saveAllAlbums(remoteAlbums.data)
         } else if (remoteAlbums is Result.Error) {
             throw remoteAlbums.exception
         }

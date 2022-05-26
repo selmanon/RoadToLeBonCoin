@@ -1,6 +1,7 @@
 package com.technicaltest.roadtoleboncoin.data.local
 
 import androidx.lifecycle.LiveData
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -9,6 +10,7 @@ import com.technicaltest.roadtoleboncoin.data.Album
 /**
  * Data Access object for albums table.
  */
+@Dao
 interface AlbumsDao {
 
     /**
@@ -35,4 +37,9 @@ interface AlbumsDao {
      */
     @Query("DELETE FROM albums")
     suspend fun deleteAlbums()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllAlbums(order: List<Album>)
+
+
 }
