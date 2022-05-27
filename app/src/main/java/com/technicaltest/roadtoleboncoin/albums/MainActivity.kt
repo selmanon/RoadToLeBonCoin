@@ -1,10 +1,12 @@
 package com.technicaltest.roadtoleboncoin.albums
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.technicaltest.roadtoleboncoin.R
 import com.technicaltest.roadtoleboncoin.ViewModelFactory
 import com.technicaltest.roadtoleboncoin.data.local.AlbumsDatabase
 import com.technicaltest.roadtoleboncoin.data.local.AlbumsLocalDataSource
@@ -25,16 +27,15 @@ class MainActivity : AppCompatActivity() {
             )
         )
     }
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var albumsAdapter: AlbumsAdapter
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        setContentView(binding.root)
 
         albumsViewModel.dataLoading.observe(this) {
             binding.progressBar.isVisible = it
@@ -45,8 +46,10 @@ class MainActivity : AppCompatActivity() {
             binding.progressBar.isVisible = false
             binding.recyclerView.isVisible = true
 
-            albumsAdapter = AlbumsAdapter(it.toTypedArray())
+            binding.recyclerView.layoutManager = LinearLayoutManager(this)
+            albumsAdapter = AlbumsAdapter(it.toTypedArray(), this)
             binding.recyclerView.adapter = albumsAdapter
+
         }
 
         albumsViewModel.error.observe(this) {
@@ -55,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                 binding.recyclerView.isVisible = !it
                 binding.progressBar.isVisible = !it
 
-                binding.userMessage.error = "Unknown error"
+                binding.userMessage.error = getString(R.string.error_label)
             }
 
         }
@@ -66,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                 binding.recyclerView.isVisible = !it
                 binding.progressBar.isVisible = !it
 
-                binding.userMessage.text = "No data to show"
+                binding.userMessage.text = getString(R.string.empty_text_label)
             }
         }
 

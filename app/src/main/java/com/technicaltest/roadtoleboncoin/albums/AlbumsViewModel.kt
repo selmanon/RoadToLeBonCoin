@@ -10,7 +10,7 @@ class AlbumsViewModel(private val repository: AlbumsRepository) : ViewModel() {
 
     private val _forceUpdate = MutableLiveData(false)
 
-    private val _items: LiveData<Result<List<Album>>> = Transformations.switchMap(_forceUpdate) { forceUpdate ->
+    private val _albums: LiveData<Result<List<Album>>> = Transformations.switchMap(_forceUpdate) { forceUpdate ->
         if (forceUpdate) {
             _dataLoading.value = true
             viewModelScope.launch {
@@ -22,14 +22,12 @@ class AlbumsViewModel(private val repository: AlbumsRepository) : ViewModel() {
      repository.observeAlbums()
     }
 
-    val error: LiveData<Boolean> = Transformations.map(_items) { it is Error }
-    val empty: LiveData<Boolean> = Transformations.map(_items) { (it as? Result.Success)?.data.isNullOrEmpty() }
+    val error: LiveData<Boolean> = Transformations.map(_albums) { it is Error }
+    val empty: LiveData<Boolean> = Transformations.map(_albums) { (it as? Result.Success)?.data.isNullOrEmpty() }
 
 
-    val items: LiveData<Result<List<Album>>> = _items
 
-
-    val albums: LiveData<List<Album>> = Transformations.map(_items) {
+    val albums: LiveData<List<Album>> = Transformations.map(_albums) {
         if (it is Result.Success) {
             it.data
         } else {
@@ -46,7 +44,7 @@ class AlbumsViewModel(private val repository: AlbumsRepository) : ViewModel() {
     }
 
     /**
-     * @param forceUpdate Pass in true to refresh the data in the [TasksDataSource]
+     * @param forceUpdate Pass in true to refresh the data in the [AlbumsDataSource]
      */
     fun loadAlbums(forceUpdate: Boolean) {
         _forceUpdate.value = forceUpdate

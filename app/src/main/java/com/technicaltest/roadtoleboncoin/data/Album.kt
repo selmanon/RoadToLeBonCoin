@@ -9,8 +9,8 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "albums")
 data class Album(
-    @PrimaryKey val albumId: Int,
-    @ColumnInfo val id: String?,
+    @ColumnInfo val albumId: Int,
+    @PrimaryKey val id: Int,
     @ColumnInfo val title: String?,
     @ColumnInfo val url: String?,
     @ColumnInfo val thumbnailUrl: String?
