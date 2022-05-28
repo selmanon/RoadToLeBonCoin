@@ -72,13 +72,19 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:ktx_coroutine_android_version"
+
+    testImplementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-rc01'
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.0'
+
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.21"
+
     testImplementation 'junit:junit:4.13.2'
     testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
 
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.21"
     //testImplementation "android.arch.core:core-testing:$archTestingVersion"
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

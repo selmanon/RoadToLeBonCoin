@@ -16,6 +16,7 @@ class AlbumsViewModel @Inject constructor(private val repository: AlbumsReposito
     private val _albums: LiveData<Result<List<Album>>> = Transformations.switchMap(_forceUpdate) { forceUpdate ->
         if (forceUpdate) {
             _dataLoading.value = true
+
             viewModelScope.launch {
                 repository.getAlbums(forceUpdate)
                 _dataLoading.value = false
@@ -27,7 +28,6 @@ class AlbumsViewModel @Inject constructor(private val repository: AlbumsReposito
 
     val error: LiveData<Boolean> = Transformations.map(_albums) { it is Error }
     val empty: LiveData<Boolean> = Transformations.map(_albums) { (it as? Result.Success)?.data.isNullOrEmpty() }
-
 
 
     val albums: LiveData<List<Album>> = Transformations.map(_albums) {
@@ -43,7 +43,7 @@ class AlbumsViewModel @Inject constructor(private val repository: AlbumsReposito
 
     init {
         // Set initial state
-        loadAlbums(true)
+        //loadAlbums(true)
     }
 
     /**
