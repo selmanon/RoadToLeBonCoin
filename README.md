@@ -19,7 +19,6 @@ The project architecture is based on google architecture.
 * Retrofit 
 * Glide
 * Gson
-* Android Support Library
 * Android Architecture Components 
 	* LiveData
 	* ViewModel
