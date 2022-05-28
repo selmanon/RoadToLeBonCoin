@@ -25,8 +25,8 @@ class FakeDataSource(var albums: MutableList<Album>? = mutableListOf()) : Albums
         albums?.clear()
     }
 
-    override suspend fun saveAllAlbums(albums: List<Album>) {
-        TODO("Not yet implemented")
+    override suspend fun saveAllAlbums(album: List<Album>) {
+        albums?.addAll(album)
     }
 
 }

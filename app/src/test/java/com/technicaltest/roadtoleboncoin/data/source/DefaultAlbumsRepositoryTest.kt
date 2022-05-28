@@ -12,10 +12,10 @@ import org.junit.Test
 
 class DefaultAlbumsRepositoryTest {
 
-    private val album1 = Album(1, "1", "title1", "url1", "thumburl1")
-    private val album2 = Album(2, "2", "title2", "url2", "thumburl2")
-    private val album3 = Album(3, "3", "title3", "url3", "thumburl3")
-    private val newAlbum = Album(4000, "4000", "Title new", "url  new", "thumburl nzw")
+    private val album1 = Album(1, 1, "title1", "url1", "thumburl1")
+    private val album2 = Album(2, 2, "title2", "url2", "thumburl2")
+    private val album3 = Album(3, 3, "title3", "url3", "thumburl3")
+    private val newAlbum = Album(4000, 4000, "Title new", "url  new", "thumburl nzw")
     private val remoteAlbums = listOf(album1, album2).sortedBy { it.id }
     private val localAlbums = listOf(album3).sortedBy { it.id }
     private val newAlbums = listOf(newAlbum).sortedBy { it.id }
