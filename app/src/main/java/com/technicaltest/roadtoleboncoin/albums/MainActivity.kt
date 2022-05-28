@@ -7,16 +7,8 @@ import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.technicaltest.roadtoleboncoin.R
-import com.technicaltest.roadtoleboncoin.ViewModelFactory
-import com.technicaltest.roadtoleboncoin.data.local.AlbumsDatabase
-import com.technicaltest.roadtoleboncoin.data.local.AlbumsLocalDataSource
-import com.technicaltest.roadtoleboncoin.data.remote.AlbumsRemoteDataSource
-import com.technicaltest.roadtoleboncoin.data.remote.AlbumsService
-import com.technicaltest.roadtoleboncoin.data.source.DefaultAlbumsRepository
 import com.technicaltest.roadtoleboncoin.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers.IO
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
