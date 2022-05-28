@@ -1,4 +1,4 @@
-package com.technicaltest.roadtoleboncoin.albums
+package com.technicaltest
 
 import android.support.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData

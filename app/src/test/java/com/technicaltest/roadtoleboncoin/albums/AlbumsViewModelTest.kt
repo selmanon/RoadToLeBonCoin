@@ -3,6 +3,7 @@ package com.technicaltest.roadtoleboncoin.albums
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.MainCoroutineRule
 import com.technicaltest.FakeFailingAlbumsRemoteDataSource
+import com.technicaltest.FakeRepository
 import com.technicaltest.getOrAwaitValue
 import com.technicaltest.observeForTesting
 import com.technicaltest.roadtoleboncoin.data.Album
