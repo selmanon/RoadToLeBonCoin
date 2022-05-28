@@ -4,9 +4,12 @@ import androidx.lifecycle.*
 import com.technicaltest.roadtoleboncoin.data.Album
 import com.technicaltest.roadtoleboncoin.data.Result
 import com.technicaltest.roadtoleboncoin.data.source.AlbumsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AlbumsViewModel(private val repository: AlbumsRepository) : ViewModel() {
+@HiltViewModel
+class AlbumsViewModel @Inject constructor(private val repository: AlbumsRepository) : ViewModel() {
 
     private val _forceUpdate = MutableLiveData(false)
 

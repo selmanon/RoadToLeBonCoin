@@ -8,14 +8,11 @@ import retrofit2.http.GET
 
 
 interface AlbumsService {
+
     @GET("img/shared/technical-test.json")
     suspend fun fetchAlbums(): List<Album>
 
     companion object {
-        var retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://static.leboncoin.fr/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
+        const val BASE_URL = "https://static.leboncoin.fr"
     }
 }

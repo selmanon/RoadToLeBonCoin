@@ -10,6 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".RoadToLeBonCoinApp"
         android:theme="@style/Theme.RoadToLeBonCoin">
         <activity
             android:name=".albums.MainActivity"

@@ -14,19 +14,15 @@ import com.technicaltest.roadtoleboncoin.data.remote.AlbumsRemoteDataSource
 import com.technicaltest.roadtoleboncoin.data.remote.AlbumsService
 import com.technicaltest.roadtoleboncoin.data.source.DefaultAlbumsRepository
 import com.technicaltest.roadtoleboncoin.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers.IO
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val albumsViewModel: AlbumsViewModel by viewModels {
-        ViewModelFactory(
-            DefaultAlbumsRepository(
-                AlbumsRemoteDataSource(AlbumsService.retrofit, IO),
-                AlbumsLocalDataSource(AlbumsDatabase.getInstance(this).albumsDao(), IO),
-                IO
-            )
-        )
-    }
+    private val albumsViewModel: AlbumsViewModel by viewModels()
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var albumsAdapter: AlbumsAdapter
 

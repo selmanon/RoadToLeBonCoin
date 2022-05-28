@@ -8,20 +8,19 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import com.technicaltest.roadtoleboncoin.data.*
+import javax.inject.Inject
 
 /**
- * Concrete implementation of a local data source as a db.
+ * Concrete implementation of a a remote Data source.
  */
 
-class AlbumsRemoteDataSource internal constructor(private val retrofit: Retrofit, private val ioDispatcher : CoroutineDispatcher) : AlbumsDataSource{
+class AlbumsRemoteDataSource @Inject internal constructor(private val albumsService: AlbumsService, private val ioDispatcher : CoroutineDispatcher) : AlbumsDataSource{
 
     override fun observeAlbums(): LiveData<Result<List<Album>>> {
         TODO("Not yet implemented")
     }
 
     override suspend fun getAllAlbums(): Result<List<Album>> {
-        val albumsService = retrofit.create(AlbumsService::class.java)
-
         val albums = withContext(IO) {
             albumsService.fetchAlbums()
         }

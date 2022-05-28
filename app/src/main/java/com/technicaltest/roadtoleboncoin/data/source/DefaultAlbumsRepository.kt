@@ -10,11 +10,13 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import com.technicaltest.roadtoleboncoin.data.*
 import java.lang.Exception
+import javax.inject.Inject
 
-class DefaultAlbumsRepository(
-    private val albumsRemoteDataSource: AlbumsDataSource,
-    private val albumsLocalDataSource: AlbumsDataSource,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+
+class DefaultAlbumsRepository @Inject constructor(
+    val albumsRemoteDataSource: AlbumsDataSource,
+    val albumsLocalDataSource: AlbumsDataSource,
+    private val ioDispatcher: CoroutineDispatcher
 ) : AlbumsRepository{
 
     override suspend fun getAlbums(forceUpdate: Boolean): Result<List<Album>> {
