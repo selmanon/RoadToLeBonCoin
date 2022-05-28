@@ -21,7 +21,7 @@ class AlbumsRemoteDataSource @Inject internal constructor(private val albumsServ
     }
 
     override suspend fun getAllAlbums(): Result<List<Album>> {
-        val albums = withContext(IO) {
+        val albums = withContext(ioDispatcher) {
             albumsService.fetchAlbums()
         }
 
