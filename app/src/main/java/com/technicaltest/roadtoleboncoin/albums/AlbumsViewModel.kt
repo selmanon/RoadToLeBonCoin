@@ -43,7 +43,7 @@ class AlbumsViewModel @Inject constructor(private val repository: AlbumsReposito
 
     init {
         // Set initial state
-        //loadAlbums(true)
+        loadAlbums(true)
     }
 
     /**

@@ -66,6 +66,5 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        albumsViewModel.loadAlbums(forceUpdate = true)
     }
 }
