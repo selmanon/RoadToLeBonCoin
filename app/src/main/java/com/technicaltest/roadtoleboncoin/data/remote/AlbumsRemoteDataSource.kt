@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import com.technicaltest.roadtoleboncoin.data.Album
 import com.technicaltest.roadtoleboncoin.data.source.AlbumsDataSource
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
 import com.technicaltest.roadtoleboncoin.data.*
 import javax.inject.Inject
 

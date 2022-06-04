@@ -41,8 +41,6 @@ class AlbumsViewModelTest {
     private lateinit var albumsRepository: FakeRepository
 
 
-    private val testDispatcher = TestCoroutineDispatcher()
-
 
     @Before
     fun setupAlbumsViewModel() {
@@ -65,7 +63,7 @@ class AlbumsViewModelTest {
         albumsRepository.setReturnError(true)
 
         // Load album
-        albumsViewModel.loadAlbums(true)
+        albumsViewModel.loadAlbums()
         // Observe the items to keep LiveData emitting
         albumsViewModel.albums.observeForTesting {
 
@@ -111,7 +109,7 @@ class AlbumsViewModelTest {
         Dispatchers.setMain(StandardTestDispatcher())
 
         // Load the task in the viewmodel
-        albumsViewModel.loadAlbums(true)
+        albumsViewModel.loadAlbums()
 
         albumsViewModel.albums.observeForTesting {
             // Then progress indicator is shown

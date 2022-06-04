@@ -7,7 +7,7 @@ import com.technicaltest.roadtoleboncoin.data.*
  * Main entry point for accessing albums data.
  */
 interface AlbumsRepository {
-    fun observeAlbums(): LiveData<Result<List<Album>>>
+    suspend fun observeAlbums(): LiveData<Result<List<Album>>>
 
     suspend fun getAlbumse(): Result<List<Album>>
 

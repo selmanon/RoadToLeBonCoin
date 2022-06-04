@@ -1,15 +1,9 @@
 package com.technicaltest.roadtoleboncoin.data.source
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.technicaltest.roadtoleboncoin.data.Album
-import com.technicaltest.roadtoleboncoin.data.local.AlbumsLocalDataSource
-import com.technicaltest.roadtoleboncoin.data.remote.AlbumsRemoteDataSource
+import com.technicaltest.roadtoleboncoin.data.Result
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import com.technicaltest.roadtoleboncoin.data.*
-import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -32,7 +26,7 @@ class DefaultAlbumsRepository @Inject constructor(
     }
 
 
-    override fun observeAlbums(): LiveData<Result<List<Album>>> = albumsLocalDataSource.observeAlbums()
+    override suspend fun observeAlbums(): LiveData<Result<List<Album>>> = albumsLocalDataSource.observeAlbums()
 
 
     override suspend fun saveAlbum(alum: Album) {

@@ -1,23 +1,18 @@
 package com.technicaltest.roadtoleboncoin.di
 
-import com.technicaltest.roadtoleboncoin.RoadToLeBonCoinApp
 import com.technicaltest.roadtoleboncoin.data.local.AlbumsDao
 import com.technicaltest.roadtoleboncoin.data.local.AlbumsLocalDataSource
 import com.technicaltest.roadtoleboncoin.data.remote.AlbumsRemoteDataSource
 import com.technicaltest.roadtoleboncoin.data.remote.AlbumsService
-import com.technicaltest.roadtoleboncoin.data.source.AlbumsDataSource
 import com.technicaltest.roadtoleboncoin.data.source.AlbumsRepository
 import com.technicaltest.roadtoleboncoin.data.source.DefaultAlbumsRepository
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Qualifier
 import javax.inject.Singleton
-
 
 
 @Module

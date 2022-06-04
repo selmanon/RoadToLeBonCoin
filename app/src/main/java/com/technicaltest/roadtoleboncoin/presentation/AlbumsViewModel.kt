@@ -36,9 +36,7 @@ class AlbumsViewModel @Inject constructor(private val repository: AlbumsReposito
         loadAlbums()
     }
 
-    /**
-     * @param forceUpdate Pass in true to refresh the data in the [AlbumsDataSource]
-     */
+
     fun loadAlbums(): LiveData<Result<List<Album>>> {
             _dataLoading.value = true
 

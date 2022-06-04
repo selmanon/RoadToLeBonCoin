@@ -52,7 +52,7 @@ class AlbumsAdapter(private val dataSet: Array<Album>, private val context : Con
         Glide
             .with(context)
             .load(thumbnailUrl)
-            .into(viewHolder.thumbnailUrlImageView);
+            .into(viewHolder.thumbnailUrlImageView)
 
     }
 
