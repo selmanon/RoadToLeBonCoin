@@ -13,7 +13,7 @@
         android:name=".RoadToLeBonCoinApp"
         android:theme="@style/Theme.RoadToLeBonCoin">
         <activity
-            android:name=".albums.MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

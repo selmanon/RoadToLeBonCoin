@@ -1,4 +1,4 @@
-package com.technicaltest.roadtoleboncoin.albums
+package com.technicaltest.roadtoleboncoin.presentation
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
@@ -15,15 +15,22 @@ class MainActivity : AppCompatActivity() {
 
     private val albumsViewModel: AlbumsViewModel by viewModels()
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var _binding: ActivityMainBinding
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding
+
+
     private lateinit var albumsAdapter: AlbumsAdapter
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         albumsViewModel.dataLoading.observe(this) {
             binding.progressBar.isVisible = it
@@ -63,8 +70,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-    override fun onStart() {
-        super.onStart()
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

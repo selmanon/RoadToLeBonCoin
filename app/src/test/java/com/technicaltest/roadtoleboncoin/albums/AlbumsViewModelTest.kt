@@ -8,6 +8,7 @@ import com.technicaltest.getOrAwaitValue
 import com.technicaltest.observeForTesting
 import com.technicaltest.roadtoleboncoin.data.Album
 import com.technicaltest.roadtoleboncoin.data.source.DefaultAlbumsRepository
+import com.technicaltest.roadtoleboncoin.presentation.AlbumsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking

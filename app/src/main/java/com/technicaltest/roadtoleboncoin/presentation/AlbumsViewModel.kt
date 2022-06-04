@@ -1,4 +1,4 @@
-package com.technicaltest.roadtoleboncoin.albums
+package com.technicaltest.roadtoleboncoin.presentation
 
 import androidx.lifecycle.*
 import com.technicaltest.roadtoleboncoin.data.Album
@@ -11,20 +11,10 @@ import javax.inject.Inject
 @HiltViewModel
 class AlbumsViewModel @Inject constructor(private val repository: AlbumsRepository) : ViewModel() {
 
-    private val _forceUpdate = MutableLiveData(false)
 
-    private val _albums: LiveData<Result<List<Album>>> = Transformations.switchMap(_forceUpdate) { forceUpdate ->
-        if (forceUpdate) {
-            _dataLoading.value = true
+    private val _albums: LiveData<Result<List<Album>>> = loadAlbums()
 
-            viewModelScope.launch {
-                repository.getAlbums(forceUpdate)
-                _dataLoading.value = false
-            }
-        }
 
-     repository.observeAlbums()
-    }
 
     val error: LiveData<Boolean> = Transformations.map(_albums) { it is Error }
     val empty: LiveData<Boolean> = Transformations.map(_albums) { (it as? Result.Success)?.data.isNullOrEmpty() }
@@ -43,18 +33,19 @@ class AlbumsViewModel @Inject constructor(private val repository: AlbumsReposito
 
     init {
         // Set initial state
-        loadAlbums(true)
+        loadAlbums()
     }
 
     /**
      * @param forceUpdate Pass in true to refresh the data in the [AlbumsDataSource]
      */
-    fun loadAlbums(forceUpdate: Boolean) {
-        _forceUpdate.value = forceUpdate
-    }
+    fun loadAlbums(): LiveData<Result<List<Album>>> {
+            _dataLoading.value = true
 
-
-    fun refresh() {
-        _forceUpdate.value = true
+            viewModelScope.launch {
+                repository.getAlbumse()
+                _dataLoading.value = false
+            }
+            return repository.observeAlbums()
     }
 }

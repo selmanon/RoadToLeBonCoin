@@ -1,4 +1,4 @@
-package com.technicaltest.roadtoleboncoin.albums
+package com.technicaltest.roadtoleboncoin.presentation
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -25,9 +25,6 @@ class AlbumsAdapter(private val dataSet: Array<Album>, private val context : Con
         val titleTextView: TextView = view.findViewById(R.id.titileTextView)
         val thumbnailUrlImageView: ImageView = view.findViewById(R.id.imageView)
 
-        init {
-            // Define click listener for the ViewHolder's View.
-        }
     }
 
     // Create new views (invoked by the layout manager)
