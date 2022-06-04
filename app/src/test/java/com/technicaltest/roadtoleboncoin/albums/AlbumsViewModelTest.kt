@@ -9,6 +9,7 @@ import com.technicaltest.observeForTesting
 import com.technicaltest.roadtoleboncoin.data.Album
 import com.technicaltest.roadtoleboncoin.data.source.DefaultAlbumsRepository
 import com.technicaltest.roadtoleboncoin.presentation.AlbumsViewModel
+import com.technicaltest.roadtoleboncoin.presentation.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -54,7 +55,7 @@ class AlbumsViewModelTest {
         // Given an initialized albumsViewModel with no album
 
         // Then the results are empty
-        assertTrue(albumsViewModel.empty.getOrAwaitValue())
+        assertTrue(albumsViewModel.albumUiState.value is UiState.Empty)
     }
 
     @Test
@@ -68,7 +69,7 @@ class AlbumsViewModelTest {
         albumsViewModel.albums.observeForTesting {
 
             // Then progress indicator is hidden
-            assertFalse(albumsViewModel.dataLoading.getOrAwaitValue())
+            assertFalse(albumsViewModel.albumUiState.value is UiState.Loading)
 
             // And the list of items is empty
             assertTrue(albumsViewModel.albums.getOrAwaitValue().isNullOrEmpty())
@@ -85,7 +86,7 @@ class AlbumsViewModelTest {
         albumsRepository.addAlbums(album1, album2, album3)
 
         // Then the results are not empty
-        assertFalse(albumsViewModel.empty.getOrAwaitValue())
+        assertFalse(albumsViewModel.albumUiState.value is UiState.Empty)
     }
 
     @Test
@@ -100,7 +101,8 @@ class AlbumsViewModelTest {
         )
 
         // Then an error message is shown
-        assertTrue(emptyViewModel.empty.getOrAwaitValue())
+        assertTrue(albumsViewModel.albumUiState.value is UiState.Empty)
+
     }
 
     @Test
@@ -113,13 +115,14 @@ class AlbumsViewModelTest {
 
         albumsViewModel.albums.observeForTesting {
             // Then progress indicator is shown
-            assertTrue(albumsViewModel.dataLoading.getOrAwaitValue())
+            assertTrue(albumsViewModel.albumUiState.value is UiState.Loading)
 
             // Execute pending coroutines actions
             advanceUntilIdle()
 
             // Then progress indicator is hidden
-            assertFalse(albumsViewModel.dataLoading.getOrAwaitValue())
+            assertFalse(albumsViewModel.albumUiState.value is UiState.Loading)
+
         }
 
 

@@ -21,14 +21,14 @@ class FakeRepository : AlbumsRepository{
         shouldReturnError = value
     }
 
-    override suspend fun observeAlbums(): LiveData<Result<List<Album>>> {
+    override fun observeAlbums(): LiveData<Result<List<Album>>> {
         runBlocking {
-            observableAlbums.value = getAlbumse()
+            observableAlbums.value = getAlbums()
         }
         return observableAlbums
     }
 
-    override suspend fun getAlbumse(): Result<List<Album>> {
+    override suspend fun getAlbums(): Result<List<Album>> {
         if (shouldReturnError) {
             return Result.Error(Exception("Test exception"))
         }
@@ -47,7 +47,7 @@ class FakeRepository : AlbumsRepository{
             albumsServiceData[album.id] = album
         }
         runBlocking {
-            observableAlbums.value = getAlbums(true)
+            observableAlbums.value = getAlbums()
         }
     }
 

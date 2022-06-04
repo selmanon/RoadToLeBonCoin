@@ -15,11 +15,11 @@ class MainActivity : AppCompatActivity() {
 
     private val albumsViewModel: AlbumsViewModel by viewModels()
 
-    private lateinit var _binding: ActivityMainBinding
+    private var _binding: ActivityMainBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
-    private val binding get() = _binding
+    private val binding get() = _binding!!
 
 
     private lateinit var albumsAdapter: AlbumsAdapter
@@ -32,42 +32,44 @@ class MainActivity : AppCompatActivity() {
         val view = binding?.root
         setContentView(view)
 
-        albumsViewModel.dataLoading.observe(this) {
-            binding.progressBar.isVisible = it
-        }
+        albumsViewModel.albumUiState.observe(this) {
+            when (it) {
+                UiState.Loading -> {
+                    binding.progressBar.isVisible = true
+                }
+                UiState.Empty -> {
+                    binding.userMessage.isVisible = true
+                    binding.recyclerView.isVisible = false
+                    binding.progressBar.isVisible = false
 
-        albumsViewModel.albums.observe(this) {
-            binding.userMessage.isVisible = false
-            binding.progressBar.isVisible = false
-            binding.recyclerView.isVisible = true
+                    binding.userMessage.text = getString(R.string.empty_text_label)
+                }
 
-            binding.recyclerView.layoutManager = LinearLayoutManager(this)
-            albumsAdapter = AlbumsAdapter(it.toTypedArray(), this)
-            binding.recyclerView.adapter = albumsAdapter
+                UiState.Error("") -> {
+                    binding.userMessage.isVisible = true
+                    binding.recyclerView.isVisible = false
+                    binding.progressBar.isVisible = false
 
-        }
+                    binding.userMessage.text = getString(R.string.error_label)
+                }
 
-        albumsViewModel.error.observe(this) {
-            if (it) {
-                binding.userMessage.isVisible = it
-                binding.recyclerView.isVisible = !it
-                binding.progressBar.isVisible = !it
+                UiState.FinishLoading -> {
+                    binding.userMessage.isVisible = false
+                    binding.recyclerView.isVisible = true
+                    binding.progressBar.isVisible = false
+                    albumsViewModel.albums.observe(this) {
+                        binding.userMessage.isVisible = false
+                        binding.progressBar.isVisible = false
+                        binding.recyclerView.isVisible = true
 
-                binding.userMessage.error = getString(R.string.error_label)
+                        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+                        albumsAdapter = AlbumsAdapter(it.toTypedArray(), this)
+                        binding.recyclerView.adapter = albumsAdapter
+
+                    }
+                }
             }
-
         }
-
-        albumsViewModel.empty.observe(this) {
-            if (it) {
-                binding.userMessage.isVisible = it
-                binding.recyclerView.isVisible = !it
-                binding.progressBar.isVisible = !it
-
-                binding.userMessage.text = getString(R.string.empty_text_label)
-            }
-        }
-
     }
 
     override fun onDestroy() {

@@ -68,7 +68,7 @@ class DefaultAlbumsRepositoryTest {
     @Test
     fun getAlbums_requestsAllAlbumsFromRemoteDataSource() = runBlocking {
         // When albums are requested from the albums repository
-        val albums = cut.getAlbums(true) as Result.Success
+        val albums = cut.getAlbums() as Result.Success
 
         // Then albums are loaded from the remote data source
         assertEquals(albums.data, remoteAlbums)
@@ -101,7 +101,7 @@ class DefaultAlbumsRepositoryTest {
         assertEquals(cachedAlbums, albums)
 
         // Now force remote loading
-        val refreshedAlbums = cut.getAlbums(true) as Result.Success
+        val refreshedAlbums = cut.getAlbums() as Result.Success
 
         // Albums must be the recently updated in REMOTE
         assertEquals(refreshedAlbums.data, newAlbums)
@@ -113,7 +113,7 @@ class DefaultAlbumsRepositoryTest {
         albumsRemoteDataSource.albums = null
 
         // Load Albums forcing remote load
-        val refreshedAlbums = cut.getAlbums(true)
+        val refreshedAlbums = cut.getAlbums()
 
         // Result should be an error
         assertNotEquals(refreshedAlbums, Result.Error(java.lang.Exception()))
@@ -144,7 +144,7 @@ class DefaultAlbumsRepositoryTest {
         val initialLocal = albumsLocalDataSource.albums
 
         // First load will fetch from remote
-        val newAlbums = (cut.getAlbums(true) as Result.Success).data
+        val newAlbums = (cut.getAlbums() as Result.Success).data
 
         assertEquals(newAlbums, remoteAlbums)
         assertEquals(newAlbums, albumsLocalDataSource.albums)

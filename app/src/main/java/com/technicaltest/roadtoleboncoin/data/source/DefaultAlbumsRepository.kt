@@ -13,20 +13,18 @@ class DefaultAlbumsRepository @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) : AlbumsRepository{
 
-    override suspend fun getAlbums(forceUpdate: Boolean): Result<List<Album>> {
-        if(forceUpdate) {
-            try {
-                updateAlbumsFromRemoteDataSource()
-            } catch ( e : Exception) {
-                return Result.Error(e)
-            }
+
+
+    override fun observeAlbums(): LiveData<Result<List<Album>>> = albumsLocalDataSource.observeAlbums()
+    override suspend fun getAlbums(): Result<List<Album>> {
+        try {
+            updateAlbumsFromRemoteDataSource()
+        } catch ( e : Exception) {
+            return Result.Error(e)
         }
 
-        return albumsLocalDataSource.getAllAlbums()
-    }
 
-
-    override suspend fun observeAlbums(): LiveData<Result<List<Album>>> = albumsLocalDataSource.observeAlbums()
+        return albumsLocalDataSource.getAllAlbums()    }
 
 
     override suspend fun saveAlbum(alum: Album) {

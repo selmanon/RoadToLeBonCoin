@@ -12,13 +12,9 @@ import javax.inject.Inject
 class AlbumsViewModel @Inject constructor(private val repository: AlbumsRepository) : ViewModel() {
 
 
+     val albumUiState: MutableLiveData<UiState> = MutableLiveData()
+
     private val _albums: LiveData<Result<List<Album>>> = loadAlbums()
-
-
-
-    val error: LiveData<Boolean> = Transformations.map(_albums) { it is Error }
-    val empty: LiveData<Boolean> = Transformations.map(_albums) { (it as? Result.Success)?.data.isNullOrEmpty() }
-
 
     val albums: LiveData<List<Album>> = Transformations.map(_albums) {
         if (it is Result.Success) {
@@ -28,9 +24,6 @@ class AlbumsViewModel @Inject constructor(private val repository: AlbumsReposito
         }
     }
 
-    private val _dataLoading = MutableLiveData<Boolean>()
-    val dataLoading: LiveData<Boolean> = _dataLoading
-
     init {
         // Set initial state
         loadAlbums()
@@ -38,12 +31,12 @@ class AlbumsViewModel @Inject constructor(private val repository: AlbumsReposito
 
 
     fun loadAlbums(): LiveData<Result<List<Album>>> {
-            _dataLoading.value = true
 
-            viewModelScope.launch {
-                repository.getAlbumse()
-                _dataLoading.value = false
-            }
-            return repository.observeAlbums()
+        viewModelScope.launch {
+            repository.getAlbums()
+            albumUiState.postValue(UiState.FinishLoading)
+        }
+         return repository.observeAlbums()
     }
+
 }
