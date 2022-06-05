@@ -5,7 +5,8 @@ import com.technicaltest.roadtoleboncoin.data.local.AlbumsLocalDataSource
 import com.technicaltest.roadtoleboncoin.data.remote.AlbumsRemoteDataSource
 import com.technicaltest.roadtoleboncoin.data.remote.AlbumsService
 import com.technicaltest.roadtoleboncoin.data.source.AlbumsRepository
-import com.technicaltest.roadtoleboncoin.data.source.DefaultAlbumsRepository
+import com.technicaltest.roadtoleboncoin.domain.repositories.DefaultAlbumsRepository
+import com.technicaltest.roadtoleboncoin.domain.mappers.AlbumMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,10 +29,16 @@ class RepositoryModules {
     fun provideAlbumsRemoteDataSource(albumsService: AlbumsService, ioDispatcher: CoroutineDispatcher) = AlbumsRemoteDataSource(albumsService, ioDispatcher)
 
     @Provides
+    @Singleton
     fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
     @Provides
     @Singleton
-    fun provideDefaultAlbumRepository(remoteDataSource: AlbumsRemoteDataSource, localDataSource: AlbumsLocalDataSource,ioDispatcher: CoroutineDispatcher) : AlbumsRepository =
-        DefaultAlbumsRepository(remoteDataSource, localDataSource, ioDispatcher)
+    fun provideAlbumMapper() = AlbumMapper()
+
+    @Provides
+    @Singleton
+    fun provideDefaultAlbumRepository(remoteDataSource: AlbumsRemoteDataSource, localDataSource: AlbumsLocalDataSource,ioDispatcher: CoroutineDispatcher, albumMapper: AlbumMapper
+    ) : AlbumsRepository =
+        DefaultAlbumsRepository(remoteDataSource, localDataSource, ioDispatcher,albumMapper)
 }

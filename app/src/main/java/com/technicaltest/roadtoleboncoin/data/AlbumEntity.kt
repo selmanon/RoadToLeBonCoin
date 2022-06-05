@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
  * Immutable model class for a Album.
  */
 @Entity(tableName = "albums")
-data class Album(
+data class AlbumEntity(
     @ColumnInfo val albumId: Int,
     @PrimaryKey val id: Int,
     @ColumnInfo val title: String?,

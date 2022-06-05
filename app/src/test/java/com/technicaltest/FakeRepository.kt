@@ -3,9 +3,10 @@ package com.technicaltest
 import android.support.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.technicaltest.roadtoleboncoin.data.Album
+import com.technicaltest.roadtoleboncoin.data.AlbumEntity
 import com.technicaltest.roadtoleboncoin.data.Result
 import com.technicaltest.roadtoleboncoin.data.source.AlbumsRepository
+import com.technicaltest.roadtoleboncoin.domain.model.Album
 import kotlinx.coroutines.runBlocking
 
 class FakeRepository : AlbumsRepository{
@@ -35,16 +36,16 @@ class FakeRepository : AlbumsRepository{
         return Result.Success(albumsServiceData.values.toList())    }
 
 
-    override suspend fun saveAlbum(alum: Album) {
-        albumsServiceData[alum.id] = alum }
+    override suspend fun saveAlbum(alum: AlbumEntity) {
+        albumsServiceData[alum.id] = Album(alum.title?:"", alum.url?:"", alum.thumbnailUrl?:"") }
 
 
 
 
     @VisibleForTesting
-    fun addAlbums(vararg albums: Album) {
-        for (album in albums) {
-            albumsServiceData[album.id] = album
+    fun addAlbums(vararg albumEntities: AlbumEntity) {
+        for (album in albumEntities) {
+            albumsServiceData[album.id] = Album(album.title?:"", album.url?:"", album.thumbnailUrl?:"")
         }
         runBlocking {
             observableAlbums.value = getAlbums()

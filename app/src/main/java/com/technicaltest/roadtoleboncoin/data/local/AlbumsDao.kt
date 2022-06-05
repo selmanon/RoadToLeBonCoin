@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.technicaltest.roadtoleboncoin.data.Album
+import com.technicaltest.roadtoleboncoin.data.AlbumEntity
 
 /**
  * Data Access object for albums table.
@@ -19,18 +19,18 @@ interface AlbumsDao {
      * @return all albums.
      */
     @Query("Select * FROM albums")
-    fun observeAlbums() : LiveData<List<Album>>
+    fun observeAlbums() : LiveData<List<AlbumEntity>>
 
     @Query("Select * FROM albums")
-    suspend fun getAllAlbums() : List<Album>
+    suspend fun getAllAlbums() : List<AlbumEntity>
 
     /**
      * Insert an album in the database. If the album already exists, replace it.
      *
-     * @param album the album to be inserted.
+     * @param albumEntity the album to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAlbum(album: Album)
+    suspend fun insertAlbum(albumEntity: AlbumEntity)
 
     /**
      * Delete all albums.
@@ -39,7 +39,7 @@ interface AlbumsDao {
     suspend fun deleteAlbums()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllAlbums(order: List<Album>)
+    suspend fun insertAllAlbums(order: List<AlbumEntity>)
 
 
 }

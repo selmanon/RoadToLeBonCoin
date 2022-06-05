@@ -11,10 +11,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.technicaltest.roadtoleboncoin.R
-import com.technicaltest.roadtoleboncoin.data.Album
+import com.technicaltest.roadtoleboncoin.data.AlbumEntity
+import com.technicaltest.roadtoleboncoin.domain.model.Album
 
 
-class AlbumsAdapter(private val dataSet: Array<Album>, private val context : Context) :
+class AlbumsAdapter(private val dataSet: List<Album>, private val context : Context) :
     RecyclerView.Adapter<AlbumsAdapter.ViewHolder>() {
 
     /**

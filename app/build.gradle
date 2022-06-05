@@ -45,9 +45,9 @@ dependencies {
     def room_version = "2.4.2"
     def ktx_coroutine_android_version = "1.5.2"
     def retrofit_version = "2.9.0"
-    def gesionVersion = "2.6.1"
+    def gsonVersion = "2.6.1"
     def archTestingVersion = '2.1.0'
-    def constartintLayoutVersion = '2.1.0'
+    def constartintLayoutVersion = '2.1.4'
     def lifecyViewModelVersion = "2.4.1"
     def actvityKtXversion = "1.4.0"
     def glideVersion = "4.13.0"
@@ -57,7 +57,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
-    implementation "com.squareup.retrofit2:converter-gson:$gesionVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$gsonVersion"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$ktx_coroutine_android_version"
 

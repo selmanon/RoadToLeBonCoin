@@ -4,12 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.technicaltest.roadtoleboncoin.data.Album
+import com.technicaltest.roadtoleboncoin.data.AlbumEntity
 
 /**
  * The Room Database that contains the Albums table.
  */
-@Database(entities = [Album::class], version = 1)
+@Database(entities = [AlbumEntity::class], version = 1)
 abstract class AlbumsDatabase : RoomDatabase() {
 
     abstract fun albumsDao(): AlbumsDao

@@ -1,7 +1,7 @@
 package com.technicaltest.roadtoleboncoin.data.remote
 
 import androidx.lifecycle.LiveData
-import com.technicaltest.roadtoleboncoin.data.Album
+import com.technicaltest.roadtoleboncoin.data.AlbumEntity
 import com.technicaltest.roadtoleboncoin.data.source.AlbumsDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -14,11 +14,11 @@ import javax.inject.Inject
 
 class AlbumsRemoteDataSource @Inject internal constructor(private val albumsService: AlbumsService, private val ioDispatcher : CoroutineDispatcher) : AlbumsDataSource{
 
-    override fun observeAlbums(): LiveData<Result<List<Album>>> {
+    override fun observeAlbums(): LiveData<Result<List<AlbumEntity>>> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getAllAlbums(): Result<List<Album>> {
+    override suspend fun getAllAlbums(): Result<List<AlbumEntity>> {
         val albums = withContext(ioDispatcher) {
             albumsService.fetchAlbums()
         }
@@ -26,7 +26,7 @@ class AlbumsRemoteDataSource @Inject internal constructor(private val albumsServ
         return Result.Success(albums)
     }
 
-    override suspend fun saveAlbum(alum: Album) {
+    override suspend fun saveAlbum(alum: AlbumEntity) {
         TODO("Not yet implemented")
     }
 
@@ -34,7 +34,7 @@ class AlbumsRemoteDataSource @Inject internal constructor(private val albumsServ
         TODO("Not yet implemented")
     }
 
-    override suspend fun saveAllAlbums(albums: List<Album>) {
+    override suspend fun saveAllAlbums(albumEntities: List<AlbumEntity>) {
         TODO("Not yet implemented")
     }
 }

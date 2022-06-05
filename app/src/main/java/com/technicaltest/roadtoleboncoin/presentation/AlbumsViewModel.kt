@@ -1,9 +1,10 @@
 package com.technicaltest.roadtoleboncoin.presentation
 
 import androidx.lifecycle.*
-import com.technicaltest.roadtoleboncoin.data.Album
+import com.technicaltest.roadtoleboncoin.data.AlbumEntity
 import com.technicaltest.roadtoleboncoin.data.Result
 import com.technicaltest.roadtoleboncoin.data.source.AlbumsRepository
+import com.technicaltest.roadtoleboncoin.domain.model.Album
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -12,7 +13,7 @@ import javax.inject.Inject
 class AlbumsViewModel @Inject constructor(private val repository: AlbumsRepository) : ViewModel() {
 
 
-     val albumUiState: MutableLiveData<UiState> = MutableLiveData()
+     val albumUiState: MutableLiveData<UiState<List<Album>>> = MutableLiveData()
 
     private val _albums: LiveData<Result<List<Album>>> = loadAlbums()
 
@@ -31,6 +32,7 @@ class AlbumsViewModel @Inject constructor(private val repository: AlbumsReposito
 
 
     fun loadAlbums(): LiveData<Result<List<Album>>> {
+        albumUiState.postValue(UiState.Loading)
 
         viewModelScope.launch {
             repository.getAlbums()

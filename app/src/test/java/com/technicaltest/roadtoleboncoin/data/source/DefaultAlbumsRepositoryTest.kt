@@ -1,8 +1,9 @@
 package com.technicaltest.roadtoleboncoin.data.source
 
-import com.technicaltest.roadtoleboncoin.data.Album
+import com.technicaltest.roadtoleboncoin.data.AlbumEntity
 import com.technicaltest.roadtoleboncoin.data.FakeDataSource
 import com.technicaltest.roadtoleboncoin.data.Result
+import com.technicaltest.roadtoleboncoin.domain.repositories.DefaultAlbumsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -12,10 +13,10 @@ import org.junit.Test
 
 class DefaultAlbumsRepositoryTest {
 
-    private val album1 = Album(1, 1, "title1", "url1", "thumburl1")
-    private val album2 = Album(2, 2, "title2", "url2", "thumburl2")
-    private val album3 = Album(3, 3, "title3", "url3", "thumburl3")
-    private val newAlbum = Album(4000, 4000, "Title new", "url  new", "thumburl nzw")
+    private val album1 = AlbumEntity(1, 1, "title1", "url1", "thumburl1")
+    private val album2 = AlbumEntity(2, 2, "title2", "url2", "thumburl2")
+    private val album3 = AlbumEntity(3, 3, "title3", "url3", "thumburl3")
+    private val newAlbum = AlbumEntity(4000, 4000, "Title new", "url  new", "thumburl nzw")
     private val remoteAlbums = listOf(album1, album2).sortedBy { it.id }
     private val localAlbums = listOf(album3).sortedBy { it.id }
     private val newAlbums = listOf(newAlbum).sortedBy { it.id }
@@ -57,7 +58,7 @@ class DefaultAlbumsRepositoryTest {
         // Trigger the repository to load data, which loads from remote and caches
         val initial = cut.getAlbums()
 
-        albumsRemoteDataSource.albums = newAlbums.toMutableList()
+        albumsRemoteDataSource.albumEntities = newAlbums.toMutableList()
 
         val second = cut.getAlbums()
 
@@ -77,15 +78,15 @@ class DefaultAlbumsRepositoryTest {
     @Test
     fun saveAlbum_savesToLocalAndRemote() = runBlocking {
         // Make sure newAlbum is not in the remote or local datasources
-        assertFalse(albumsRemoteDataSource.albums?.contains(newAlbum)!!)
-        assertFalse(albumsLocalDataSource.albums?.contains(newAlbum)!!)
+        assertFalse(albumsRemoteDataSource.albumEntities?.contains(newAlbum)!!)
+        assertFalse(albumsLocalDataSource.albumEntities?.contains(newAlbum)!!)
 
         // When aan album is saved to the albums repository
         cut.saveAlbum(newAlbum)
 
         // Then local sources are called
         //assertTrue(albumsRemoteDataSource.albums?.contains(newAlbum)!!)
-        assertTrue(albumsLocalDataSource.albums?.contains(newAlbum)!!)
+        assertTrue(albumsLocalDataSource.albumEntities?.contains(newAlbum)!!)
     }
 
     @Test
@@ -94,7 +95,7 @@ class DefaultAlbumsRepositoryTest {
         val albums = cut.getAlbums()
 
         // Set a different list of albums in REMOTE
-        albumsRemoteDataSource.albums = newAlbums.toMutableList()
+        albumsRemoteDataSource.albumEntities = newAlbums.toMutableList()
 
         // But if albums are cached, subsequent calls load from cache
         val cachedAlbums = cut.getAlbums()
@@ -110,7 +111,7 @@ class DefaultAlbumsRepositoryTest {
     @Test
     fun getAlbums_WithDirtyCache_remoteUnavailable_error() = runBlocking {
         // Make remote data source unavailable
-        albumsRemoteDataSource.albums = null
+        albumsRemoteDataSource.albumEntities = null
 
         // Load Albums forcing remote load
         val refreshedAlbums = cut.getAlbums()
@@ -123,7 +124,7 @@ class DefaultAlbumsRepositoryTest {
     fun getAlbums_WithRemoteDataSourceUnavailable_AlbumsAreRetrievedFromLocal() =
         runBlocking {
             // When the remote data source is unavailable
-            albumsRemoteDataSource.albums = null
+            albumsRemoteDataSource.albumEntities = null
 
             // The repository fetches from the local source
             assertEquals((cut.getAlbums() as Result.Success).data, localAlbums)
@@ -132,8 +133,8 @@ class DefaultAlbumsRepositoryTest {
     @Test
     fun getAlbmus_WithBothDataSourcesUnavailable_returnsError() = runBlocking {
         // When both sources are unavailable
-        albumsRemoteDataSource.albums = null
-        albumsLocalDataSource.albums = null
+        albumsRemoteDataSource.albumEntities = null
+        albumsLocalDataSource.albumEntities = null
 
         // The repository returns an error
         assertEquals(cut.getAlbums()::class, Result.Error::class)
@@ -141,14 +142,14 @@ class DefaultAlbumsRepositoryTest {
 
     @Test
     fun getAlbums_refreshesLocalDataSource() = runBlocking {
-        val initialLocal = albumsLocalDataSource.albums
+        val initialLocal = albumsLocalDataSource.albumEntities
 
         // First load will fetch from remote
         val newAlbums = (cut.getAlbums() as Result.Success).data
 
         assertEquals(newAlbums, remoteAlbums)
-        assertEquals(newAlbums, albumsLocalDataSource.albums)
-        assertEquals(albumsLocalDataSource.albums, initialLocal)
+        assertEquals(newAlbums, albumsLocalDataSource.albumEntities)
+        assertEquals(albumsLocalDataSource.albumEntities, initialLocal)
     }
 
 }

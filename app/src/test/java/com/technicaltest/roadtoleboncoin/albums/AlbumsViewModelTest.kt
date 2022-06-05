@@ -6,8 +6,8 @@ import com.technicaltest.FakeFailingAlbumsRemoteDataSource
 import com.technicaltest.FakeRepository
 import com.technicaltest.getOrAwaitValue
 import com.technicaltest.observeForTesting
-import com.technicaltest.roadtoleboncoin.data.Album
-import com.technicaltest.roadtoleboncoin.data.source.DefaultAlbumsRepository
+import com.technicaltest.roadtoleboncoin.data.AlbumEntity
+import com.technicaltest.roadtoleboncoin.domain.repositories.DefaultAlbumsRepository
 import com.technicaltest.roadtoleboncoin.presentation.AlbumsViewModel
 import com.technicaltest.roadtoleboncoin.presentation.UiState
 import kotlinx.coroutines.Dispatchers
@@ -80,9 +80,9 @@ class AlbumsViewModelTest {
     @Test
     fun loadNonEmptyalbumFromRepository_NonEmptyResults() {
         // We initialise the album to 3, with one active and two completed
-        val album1 = Album(1, 1, "Title1", "url1", "thumurl1")
-        val album2 = Album(2, 2, "Title2", "url2", "thumurl2")
-        val album3 = Album(3, 3, "Title3", "url3", "thumurl3")
+        val album1 = AlbumEntity(1, 1, "Title1", "url1", "thumurl1")
+        val album2 = AlbumEntity(2, 2, "Title2", "url2", "thumurl2")
+        val album3 = AlbumEntity(3, 3, "Title3", "url3", "thumurl3")
         albumsRepository.addAlbums(album1, album2, album3)
 
         // Then the results are not empty
