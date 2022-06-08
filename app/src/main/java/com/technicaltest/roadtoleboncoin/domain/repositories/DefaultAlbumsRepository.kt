@@ -38,20 +38,31 @@ class DefaultAlbumsRepository @Inject constructor(
         } catch (e: Exception) {
             return Result.Error(e)
         }
+
         val result = albumsLocalDataSource.getAllAlbums()
 
         val albums = mutableListOf<Album>()
 
-        if (result is Result.Success) {
-            result.data.forEach { albumEntity ->
-                albums.add(albumMapper.mapAlbumEntityToDomain(albumEntity))
+        return when (result) {
+            is Result.Success -> {
+                result.data.forEach { albumEntity ->
+                    albums.add(albumMapper.mapAlbumEntityToDomain(albumEntity))
+                }
+
+                return Result.Success(albums)
             }
 
-            return Result.Success(albums)
-        } else if(result is Result.Error)
-            return Result.Error(result.exception)
+            is Result.Error -> {
+                return Result.Error(result.exception)
+            }
 
-        return Result.Success(emptyList())
+            is Result.Empty -> {
+                return Result.Empty
+            }
+            else -> {
+                return Result.Loading
+            }
+        }
 
     }
 

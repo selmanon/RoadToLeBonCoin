@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GetAlbumsUseCase @Inject constructor(
     private val repository: AlbumsRepository){
-    suspend operator fun invoke(): Result<List<Album>>? {
+    suspend operator fun invoke(): Result<List<Album>> {
         return repository.getAlbums()
     }
 
