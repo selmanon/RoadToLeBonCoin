@@ -24,9 +24,7 @@ class DefaultAlbumsRepository @Inject constructor(
         val albums = mutableListOf<Album>()
         val result = albumsLocalDataSource.observeAlbums().value
         if (result is Result.Success) {
-            for (albumEntity in result.data) {
-                albums.add(albumMapper.mapAlbumEntityToDomain(albumEntity))
-            }
+                albums.addAll(albumMapper.mapAlbumEntitiesToDomain(result.data))
         }
 
         return liveData { Result.Success(albums) }
@@ -45,10 +43,7 @@ class DefaultAlbumsRepository @Inject constructor(
 
         return when (result) {
             is Result.Success -> {
-                result.data.forEach { albumEntity ->
-                    albums.add(albumMapper.mapAlbumEntityToDomain(albumEntity))
-                }
-
+                albums.addAll(albumMapper.mapAlbumEntitiesToDomain(result.data))
                 return Result.Success(albums)
             }
 
