@@ -3,6 +3,7 @@ package com.technicaltest.roadtoleboncoin.data.source
 import com.technicaltest.roadtoleboncoin.data.AlbumEntity
 import com.technicaltest.roadtoleboncoin.data.FakeDataSource
 import com.technicaltest.roadtoleboncoin.data.Result
+import com.technicaltest.roadtoleboncoin.domain.mappers.AlbumMapper
 import com.technicaltest.roadtoleboncoin.domain.repositories.DefaultAlbumsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -39,6 +40,7 @@ class DefaultAlbumsRepositoryTest {
         // Get a reference to the class under test
         cut = DefaultAlbumsRepository(
             albumsRemoteDataSource, albumsLocalDataSource, Dispatchers.Main
+        , AlbumMapper()
         )
     }
 
@@ -48,7 +50,7 @@ class DefaultAlbumsRepositoryTest {
         val emptySource = FakeDataSource()
         val albumsRepository = DefaultAlbumsRepository(
             emptySource, emptySource, Dispatchers.Main
-        )
+        , AlbumMapper())
 
         assertTrue(albumsRepository.getAlbums() is Result.Success)
     }

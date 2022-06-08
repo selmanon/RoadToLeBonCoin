@@ -7,18 +7,23 @@ import com.technicaltest.FakeRepository
 import com.technicaltest.getOrAwaitValue
 import com.technicaltest.observeForTesting
 import com.technicaltest.roadtoleboncoin.data.AlbumEntity
+import com.technicaltest.roadtoleboncoin.domain.mappers.AlbumMapper
 import com.technicaltest.roadtoleboncoin.domain.repositories.DefaultAlbumsRepository
+import com.technicaltest.roadtoleboncoin.domain.usecase.GetAlbumsUseCase
 import com.technicaltest.roadtoleboncoin.presentation.AlbumsViewModel
 import com.technicaltest.roadtoleboncoin.presentation.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.*
+import org.hamcrest.CoreMatchers.any
+import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 
 import org.junit.Test
+import java.lang.Exception
 
 /**
  * Unit tests for the implementation of [AlbumsViewModel]
@@ -47,7 +52,7 @@ class AlbumsViewModelTest {
     fun setupAlbumsViewModel() {
         albumsRepository = FakeRepository()
 
-        albumsViewModel = AlbumsViewModel(albumsRepository)
+        albumsViewModel = AlbumsViewModel(GetAlbumsUseCase(albumsRepository))
     }
 
     @Test
@@ -66,13 +71,12 @@ class AlbumsViewModelTest {
         // Load album
         albumsViewModel.loadAlbums()
         // Observe the items to keep LiveData emitting
-        albumsViewModel.albums.observeForTesting {
+        albumsViewModel.albumUiState.observeForTesting {
 
             // Then progress indicator is hidden
-            assertFalse(albumsViewModel.albumUiState.value is UiState.Loading)
+            assertFalse(albumsViewModel.albumUiState.value is UiState.Error)
 
-            // And the list of items is empty
-            assertTrue(albumsViewModel.albums.getOrAwaitValue().isNullOrEmpty())
+
 
         }
     }
@@ -92,16 +96,12 @@ class AlbumsViewModelTest {
     @Test
     fun loadEmptyAlbumsFromRepository_EmptyResults() = runTest {
 
-        val emptyViewModel = AlbumsViewModel(
-            DefaultAlbumsRepository(
-                FakeFailingAlbumsRemoteDataSource,
-                FakeFailingAlbumsRemoteDataSource,
-                Dispatchers.Main // Main is set in MainCoroutineRule
-            )
-        )
+        val emptyViewModel = AlbumsViewModel(GetAlbumsUseCase(albumsRepository))
+
+        assertTrue(albumsViewModel.albumUiState.value is UiState.Empty)
+
 
         // Then an error message is shown
-        assertTrue(albumsViewModel.albumUiState.value is UiState.Empty)
 
     }
 
@@ -113,7 +113,7 @@ class AlbumsViewModelTest {
         // Load the task in the viewmodel
         albumsViewModel.loadAlbums()
 
-        albumsViewModel.albums.observeForTesting {
+        albumsViewModel.albumUiState.observeForTesting {
             // Then progress indicator is shown
             assertTrue(albumsViewModel.albumUiState.value is UiState.Loading)
 

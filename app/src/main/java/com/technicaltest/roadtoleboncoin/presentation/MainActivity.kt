@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.technicaltest.roadtoleboncoin.R
 import com.technicaltest.roadtoleboncoin.databinding.ActivityMainBinding
-import com.technicaltest.roadtoleboncoin.domain.model.Album
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,24 +33,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
 
-            albumsViewModel.albums.observe(this)  {
-                binding.userMessage.isVisible = false
-                binding.progressBar.isVisible = false
-                binding.recyclerView.isVisible = true
 
-                binding.recyclerView.layoutManager = LinearLayoutManager(this)
-                albumsAdapter = AlbumsAdapter(it, this)
-                binding.recyclerView.adapter = albumsAdapter
-        }
 
         albumsViewModel.albumUiState.observe(this) {
             when (it) {
 
-                UiState.Loading -> {
+                is UiState.Loading -> {
                     binding.progressBar.isVisible = true
                 }
 
-                UiState.Empty -> {
+                is UiState.Empty -> {
                     binding.userMessage.isVisible = true
                     binding.recyclerView.isVisible = false
                     binding.progressBar.isVisible = false
@@ -59,12 +50,22 @@ class MainActivity : AppCompatActivity() {
                     binding.userMessage.text = getString(R.string.empty_text_label)
                 }
 
-                UiState.Error<String>("") -> {
+                is UiState.Error -> {
                     binding.userMessage.isVisible = true
                     binding.recyclerView.isVisible = false
                     binding.progressBar.isVisible = false
 
                     binding.userMessage.text = getString(R.string.error_label)
+                }
+
+                is UiState.Success -> {
+                    binding.userMessage.isVisible = false
+                    binding.progressBar.isVisible = false
+                    binding.recyclerView.isVisible = true
+
+                    binding.recyclerView.layoutManager = LinearLayoutManager(this)
+                    albumsAdapter = AlbumsAdapter(it.data, this)
+                    binding.recyclerView.adapter = albumsAdapter
                 }
 
 

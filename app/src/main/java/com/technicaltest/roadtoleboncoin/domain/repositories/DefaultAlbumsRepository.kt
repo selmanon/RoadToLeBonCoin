@@ -6,8 +6,8 @@ import com.technicaltest.roadtoleboncoin.data.AlbumEntity
 import com.technicaltest.roadtoleboncoin.data.Result
 import com.technicaltest.roadtoleboncoin.data.source.AlbumsDataSource
 import com.technicaltest.roadtoleboncoin.data.source.AlbumsRepository
-import com.technicaltest.roadtoleboncoin.domain.mappers.AlbumMapper
 import com.technicaltest.roadtoleboncoin.domain.model.Album
+import com.technicaltest.roadtoleboncoin.domain.mappers.AlbumMapper
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
@@ -38,17 +38,21 @@ class DefaultAlbumsRepository @Inject constructor(
         } catch (e: Exception) {
             return Result.Error(e)
         }
+        val result = albumsLocalDataSource.getAllAlbums()
 
         val albums = mutableListOf<Album>()
 
-        val allAlbums = albumsLocalDataSource.getAllAlbums()
-        if (allAlbums is Result.Success) {
-            for (albumEntity in allAlbums.data) {
+        if (result is Result.Success) {
+            result.data.forEach { albumEntity ->
                 albums.add(albumMapper.mapAlbumEntityToDomain(albumEntity))
             }
-        }
 
-        return Result.Success(albums)
+            return Result.Success(albums)
+        } else if(result is Result.Error)
+            return Result.Error(result.exception)
+
+        return Result.Success(emptyList())
+
     }
 
 

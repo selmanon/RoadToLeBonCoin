@@ -1,44 +1,48 @@
 package com.technicaltest.roadtoleboncoin.presentation
 
 import androidx.lifecycle.*
-import com.technicaltest.roadtoleboncoin.data.AlbumEntity
 import com.technicaltest.roadtoleboncoin.data.Result
-import com.technicaltest.roadtoleboncoin.data.source.AlbumsRepository
 import com.technicaltest.roadtoleboncoin.domain.model.Album
+import com.technicaltest.roadtoleboncoin.domain.usecase.GetAlbumsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AlbumsViewModel @Inject constructor(private val repository: AlbumsRepository) : ViewModel() {
+class AlbumsViewModel @Inject constructor(val getAlbumsUseCase: GetAlbumsUseCase) : ViewModel() {
 
-
-     val albumUiState: MutableLiveData<UiState<List<Album>>> = MutableLiveData()
-
-    private val _albums: LiveData<Result<List<Album>>> = loadAlbums()
-
-    val albums: LiveData<List<Album>> = Transformations.map(_albums) {
-        if (it is Result.Success) {
-            it.data
-        } else {
-            null
-        }
-    }
+    val albumUiState: MutableLiveData<UiState<List<Album>>> = MutableLiveData()
 
     init {
-        // Set initial state
         loadAlbums()
     }
 
-
-    fun loadAlbums(): LiveData<Result<List<Album>>> {
+    fun loadAlbums() {
         albumUiState.postValue(UiState.Loading)
 
         viewModelScope.launch {
-            repository.getAlbums()
             albumUiState.postValue(UiState.FinishLoading)
+
+            when(val albumsResult = getAlbumsUseCase.invoke()) {
+                is Result.Success -> {
+                    albumUiState.postValue(UiState.Success(albumsResult.data))
+
+                }
+                is Result.Empty -> {
+                    albumUiState.postValue(UiState.Empty)
+
+                }
+
+                is Result.Error -> {
+                    albumUiState.postValue(UiState.Error(albumsResult.toString()))
+                }
+                else -> {}
+            }
+
+
+
         }
-         return repository.observeAlbums()
     }
+
 
 }
