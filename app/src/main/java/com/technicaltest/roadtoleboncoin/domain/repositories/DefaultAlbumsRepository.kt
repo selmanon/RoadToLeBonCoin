@@ -37,14 +37,9 @@ class DefaultAlbumsRepository @Inject constructor(
             return Result.Error(e)
         }
 
-        val result = albumsLocalDataSource.getAllAlbums()
-
-        val albums = mutableListOf<Album>()
-
-        return when (result) {
+        return when (val result = albumsLocalDataSource.getAllAlbums()) {
             is Result.Success -> {
-                albums.addAll(albumMapper.mapAlbumEntitiesToDomain(result.data))
-                return Result.Success(albums)
+                return Result.Success(albumMapper.mapAlbumEntitiesToDomain(result.data))
             }
 
             is Result.Error -> {
